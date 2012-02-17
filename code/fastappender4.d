@@ -7,8 +7,12 @@ debug import std.stdio;
 
 /// Optimized copying appender with chaining.
 /// Stores data together with linked-list node, which isn't GC-friendly.
-struct FastAppender4(T, bool X)
+import std.traits;
+
+/// Slice storer
+struct FastAppender4(A : _T[], _T)
 {
+    alias Unqual!_T T;
 	static assert(T.sizeof == 1, "TODO");
 
 private:
@@ -162,46 +166,14 @@ public:
 		}
 	}
 
-	T[] get()
+	A data()
 	{
 		if (tail)
 		{
 			consolidate();
-			return tail.dataPtr[0..cursor - tail.dataPtr];
+			return cast(A) tail.dataPtr[0..cursor - tail.dataPtr];
 		}
 		else
 			return null;
 	}
 }
-
-alias FastAppender4!(char, false) StringBuilder4;
-alias FastAppender4!(char, true ) StringBuilder4X;
-
-unittest
-{
-	debug writeln("======================");
-	StringBuilder4 sb;
-	sb.put("Hello", ' ', "world!");
-	assert(sb.get() == "Hello world!");
-}
-
-unittest
-{
-	debug writeln("======================");
-	StringBuilder4X sb;
-	sb.put("Hello", ' ', "world!");
-	assert(sb.get() == "Hello world!");
-}
-
-unittest
-{
-	debug writeln("======================");
-	StringBuilder4 sb;
-	foreach (n; 0..4096)
-		sb.put("Hello", ' ', "world!");
-	string s;
-	foreach (n; 0..4096)
-		s ~= "Hello world!";
-	assert(sb.get() == s);
-}
-

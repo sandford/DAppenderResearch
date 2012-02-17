@@ -1,4 +1,4 @@
-module code.fastappender2;
+module code.fastappender2_asm;
 
 import core.memory;
 import core.stdc.string;
@@ -149,14 +149,6 @@ struct FastAppender2(T, bool X)
 		return (size | (sub & (PAGE_SIZE-1))) + 1;
 	}
 
-	unittest
-	{
-		assert(nextCapacity(  PAGE_SIZE-1) ==   PAGE_SIZE);
-		assert(nextCapacity(  PAGE_SIZE  ) ==   PAGE_SIZE);
-		assert(nextCapacity(  PAGE_SIZE+1) == 2*PAGE_SIZE);
-		assert(nextCapacity(2*PAGE_SIZE  ) == 2*PAGE_SIZE);
-		assert(nextCapacity(2*PAGE_SIZE+1) == 3*PAGE_SIZE);
-	}
 
 	T[] get()
 	{
@@ -166,29 +158,4 @@ struct FastAppender2(T, bool X)
 
 alias FastAppender2!(char, false) StringBuilder2;
 alias FastAppender2!(char, true ) StringBuilder2X;
-
-unittest
-{
-	StringBuilder2 sb;
-	sb.put("Hello", " ", "world!");
-	assert(sb.get() == "Hello world!");
-}
-
-unittest
-{
-	StringBuilder2X sb;
-	sb.put("Hello", " ", "world!");
-	assert(sb.get() == "Hello world!");
-}
-
-unittest
-{
-	StringBuilder2 sb;
-	foreach (n; 0..4096)
-		sb.put("Hello", " ", "world!");
-	string s;
-	foreach (n; 0..4096)
-		s ~= "Hello world!";
-	assert(sb.get() == s);
-}
 

@@ -1,4 +1,4 @@
-module code.fastappender2;
+module code.fastappender2_snnmemcpy;
 
 import core.memory;
 import core.stdc.string;

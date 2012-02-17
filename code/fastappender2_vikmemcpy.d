@@ -1,4 +1,4 @@
-module code.fastappender2;
+module code.fastappender2_vikmemcpy;
 
 import core.memory;
 import code.memcpy;

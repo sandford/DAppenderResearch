@@ -1,4 +1,4 @@
-module code.fastappender2;
+module code.fastappender2_fogmemcpy;
 
 import core.memory;
 

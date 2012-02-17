@@ -1,11 +1,10 @@
-module code.fastappender6;
+module code.fastappender6_mmx;
 
 import core.memory;
 import core.stdc.string;
 import core.stdc.stdio;
 
 debug import std.stdio;
-debug import ae.utils.text;
 
 __gshared const(char)[20] _d = "Yo this is aoeu\n\n\n";
 
